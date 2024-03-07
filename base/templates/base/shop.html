@@ -1,0 +1,58 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %} Ecommerce Shop Page  {% endblock title %}
+{% block content %}
+<section id="product1" class="section-p1">
+  <div>
+    <form action="" method="GET">
+      <input type="text" placeholder="Search..." name="q">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <ul id="category">
+    <li>
+      <a href="{% url 'base:shop_page' %}">All</a>
+    </li>
+    {% for category in categories %}
+    <li>
+      <a id="ab" href="{% url 'base:shop_page'%}?q={{category.name}}"> {{category.name}} </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="pro-container">
+    {% for product in page_product %}
+    <div class="pro">
+      {% if product.thumbnail %}
+      <img src="{{product.thumbnail.url}}" alt="Product_image" />
+      {% endif %}
+      <div class="des">
+        <span>{{product.category}}</span>
+        <h5>{{product.name}}</h5>
+        <h4>${{product.price}}</h4>
+      </div>
+      {% if product.in_stock == 0 %}
+      <h3>Out of Stock</h3>
+      {% else %}
+      <button data-product={{product.id}}  data-action="add" class="update-cart addcartBtn">Add to Cart</button>
+      {% endif %}
+      <button class="viewcartBtn"><a style="text-decoration: none; color: white;" href="{% url 'base:detail_product_page' product.id %}">View Product</a></button>
+    </div>
+    {% endfor %}
+  </div>
+  <div id="pagination">
+    <span>
+        {% if page_product.has_previous %}
+            <a href="{% url 'base:shop_page' %}?page=1">&laquo; first</a>
+            <a href="{% url 'base:shop_page' %}?page={{ page_product.previous_page_number }}">previous</a>
+        {% endif %}
+        <span id="current">
+            Page {{ page_product.number }} of {{ page_product.paginator.num_pages }}
+        </span>
+        {% if page_product.has_next %}
+            <a href="{% url 'base:shop_page' %}?page={{ page_product.next_page_number }}">next</a>
+            <a href="{% url 'base:shop_page' %}?page={{ page_product.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</section>
+{% endblock content %}

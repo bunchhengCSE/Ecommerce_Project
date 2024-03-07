@@ -1,0 +1,47 @@
+{% extends 'base/main.html' %} {% block title %} Product Detail Page {% endblock title %}
+{% block content %}
+<section id="prodetails" class="section-p1">
+  <div class="single-pro-image">
+    <img src="{{product.thumbnail.url}}" width="80%" id="MainImg" class="af" alt="" />
+  </div>
+  <div class="single-pro-details">
+    <h6>{{product.category}}</h6>
+    <h4>{{product.name}}</h4>
+    <h2>${{product.price}}</h2>
+    {% if product.in_stock == 0 %}
+    <button class="normal">Out of Stock</button>
+    {% else %}
+    {% if request.user.is_authenticated %}
+    <button data-product={{product.id}}  data-action="add" class="update-cart addcartBtn">Add To Cart</button>
+    {% else %}
+    <button class="addcartBtn"> <a style="text-decoration: none; color: white;" href="{% url 'user:login' %}">Add to Cart</a></button>
+    {% endif %}
+    {% endif %}
+    <h4>Product Details</h4>
+    <p>{{product.description}}</p>
+  </div>
+</section>
+<section id="product1" class="section-p1">
+  <h2>Featured Products</h2>
+  <p>Summer Collection New Morden Design</p>
+  <div class="pro-container">
+    {% for product_the_some_category in product_the_some_categories %}
+    <div class="pro">
+      <img src="{{product_the_some_category.thumbnail.url}}" alt="#" />
+      <div class="des">
+        <span>{{product_the_some_category.category}}</span>
+        <h5>{{product_the_some_category.name}}</h5>
+        <h4>{{product_the_some_category.price}}</h4>
+      </div>
+      {% if product_the_some_category.in_stock == 0 %}
+      <h3>Out of Stock</h3>
+      {% else %}
+      <button data-product={{product.id}}  data-action="add" class="update-cart addcartBtn">Add to Cart</button>
+      {% endif %}
+      <button class="viewcartBtn"><a style="text-decoration: none; color: white;" href="{% url 'base:detail_product_page' product_the_some_category.id %}">View Product</a></button>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock content %}

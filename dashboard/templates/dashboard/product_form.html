@@ -1,0 +1,46 @@
+{% extends 'base/main.html' %}
+{% block title %} Admin Dashboard {% endblock title%}
+{% block content %}
+    <section class="section-p1">
+        <div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form__group">
+                  <div class="form__group">
+                    <label for="room_name">Product Name</label>
+                    {{form.name}}
+                  </div>
+                    <label for="room_topic">Product Categories</label>
+                    <input required type="text" value="{{product.category.name}}" name="category" list="topic-list" />
+                    <datalist id="topic-list">
+                      <select id="room_topic">
+                        {% for category in categories %}
+                        <option value="{{category.name}}">{{category.name}}</option>
+                        {% endfor %}
+                      </select>
+                    </datalist>
+                  </div>
+                  <div class="form__group">
+                    <label for="room_description">Product price</label>
+                    {{form.price}}
+                  </div>
+                  <div class="form__group">
+                    <label for="room_description">Product In stock</label>
+                    {{form.in_stock}}
+                  </div>
+                  <div class="form__group">
+                    <label for="room_description">Product Image</label>
+                    {{form.thumbnail}}
+                  </div>
+                  <div class="form__group">
+                    <label for="room_description">Product Description</label>
+                    {{form.description}}
+                  </div>
+                  <div class="form__action">
+                    <a class="btn btn--dark" href="{% url 'dashboard:index' %}">Cancel</a>
+                    <button class="btn btn--main" type="submit">Submit</button>
+                  </div>
+            </form>
+        </div>
+    </section>
+{% endblock content %}

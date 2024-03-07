@@ -1,0 +1,43 @@
+{% extends 'base/main.html' %} 
+{% block title %} Admin Dashboard {% endblock title%} 
+{% block content %}
+<section id="product1" class="section-p1">
+  <div>
+    <form action="" method="GET">
+      <input type="text" placeholder="Search..." name="q">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <ul id="category">
+    <li>
+      <a href="{% url 'dashboard:index' %}">All</a>
+    </li>
+    {% for category in categories %}
+    <li>
+      <a id="ab" href="{% url 'dashboard:index'%}?q={{category.name}}"> {{category.name}} </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <div>
+    <a href="{% url 'dashboard:insert-product' %}">Insert Product</a>
+  </div>
+  <div class="pro-container">
+    {% for product in products %}
+    <div class="pro">
+      {% if product.thumbnail %}
+      <img src="{{product.thumbnail.url}}" alt="Product_image" />
+      {% endif %}
+      <div class="des">
+        <span>{{product.category}}</span>
+        <h5>{{product.name}}</h5>
+        <h4>${{product.price}}</h4>
+      </div>
+      <a href="{% url 'dashboard:update_product' product.id  %}">Update product</a>
+      {% if request.user.is_superuser %}
+      <a href="{% url 'dashboard:remove_product' product.id  %}">Remove product</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock content %}

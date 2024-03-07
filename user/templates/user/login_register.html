@@ -1,0 +1,55 @@
+{% extends 'base/main.html' %} {% block title %} Register Page {% endblock title%} 
+{% block content %}
+<section class="section-p1">
+  {% if page == 'login' %}
+  <div class="form__group_all">
+    <form class="form__group1" action="" method="POST">
+      {% csrf_token %}
+      <div class="form__group2"> 
+        <div class="form__group3">
+          <h1 class="titlelog_reg">
+            Login your Account
+          </h1>
+          <label for="username">Username</label>
+          <input id="username"class="login_input" style="margin-bottom: 10px;" name="username" type="text"placeholder="e.g. dennis_ivy"/>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" class="login_input" style="margin-bottom: 10px;" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"/>
+          <button class="normalBtn" type="submit">Login</button>
+        </div>  
+      </div>
+    </form>
+    <div class="auth__action form__group1">
+      <p>Haven't account yet?</p>
+      <button class="normalBtn" style="margin-left: 10px;"><a style="text-decoration: none; color: white;" href="{% url 'user:register' %}">Register</a></button>
+    </div>
+  </div>
+  {% else %}
+  <div class="form__group_all">
+    <form class="form__group1" action="" method="POST">
+      {% csrf_token %} 
+      <div class="form__group4">
+        <h1 class="titlelog_reg">
+          Register your Account
+        </h1>
+        {% for field in form %}
+      <div class="form__group3" >
+        <label style="font-size: 0.7rem;" for="room_name">{{field.label}}</label>
+
+        <span  style="margin-bottom: 10px;">{{field}}</span>
+      </div>
+      {% endfor %}
+      <button type="submit" class="normalBtn">Register</button>
+      </div>      
+    </form>
+    <div class="auth__action form__group1">
+      <p>Already have account t?</p>
+      <button class="normalBtn" style="margin-left: 10px;">
+        <a style="text-decoration: none; color: white;"  href="{% url 'user:login' %}">LogIn</a>
+      </button> 
+    </div>
+  </div>
+
+
+  {% endif %}
+</section>
+{% endblock content %}

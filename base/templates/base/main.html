@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/cool.png' %}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}" />
+    <title>{% block title %} {% endblock title %}</title>
+    <script type="text/javascript">
+      const user = "{{request.user}}";
+      function getToken(name) {
+        var cookieValue = null;
+        if (document.cookie !== "") {
+          var cookies = document.cookie.split(";");
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      var csrftoken = getToken("csrftoken");
+    </script>
+  </head>
+  <body>
+   
+    {% if request.path == '/login/' or request.path == '/register/' %} 
+    
+    {% else %}
+    {% include 'base/navbar.html' %} 
+    {% endif %} 
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li class="messages">{{message}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div style="height: 80%">{% block content %}{% endblock content%}</div>
+
+    {% include 'base/footer.html' %}
+    <script type="text/javascript">
+      var updateBtns = document.getElementsByClassName("update-cart");
+      for (var i = 0; i < updateBtns.length; i++) {
+        updateBtns[i].addEventListener("click", function () {
+          var productId = this.dataset.product;
+          var action = this.dataset.action;
+          updateUserOrder(productId, action);
+        });
+      }
+      function updateUserOrder(productId, action) {
+        console.log("User is authenticated, sending data...");
+        fetch("{% url 'base:update_product'%}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify({ productId: productId, action: action }),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            location.reload();
+          });
+      }
+    </script>
+  </body>
+</html>

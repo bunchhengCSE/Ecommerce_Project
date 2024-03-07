@@ -1,0 +1,28 @@
+{% load static %}
+<section id="header" >
+  <a href="{% url 'base:home_page' %}"><img src="{% static 'images/cool.png' %}" class="logo" alt="logo"/></a>
+  <div>
+    <ul id="navbar">
+      {% if request.user.is_superuser %}
+      <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+      <li style="font-size: 16px; font-weight: 600; color: #1a1a1a;">{{request.user.username.upper}}</li>
+      <li><a href="{% url 'user:logout' %}">Logout</a></li>
+      {% else %}
+      <li><a href="{% url 'base:home_page' %}">Home</a></li>
+      <li><a href="{% url 'base:shop_page' %}">Shop</a></li>
+      <li><a href="{% url 'base:about_page' %}">About</a></li>
+      <li><a href="{% url 'base:contact_page' %}">Contact</a></li>
+      {% if request.user.is_authenticated %} 
+      <li id="lg-bag"><a href="{% url 'base:cart_page' %}">Cart</a></li>
+      <li style="font-size: 16px; font-weight: 600; color: #1a1a1a;">{{request.user.username.upper}}</li>
+      <li><a href="{% url 'user:logout' %}">Logout</a></li>
+      {% else %}
+      <li><a href="{% url 'user:login' %}">Login</a></li>
+      {% endif %} {% endif %}
+    </ul>
+  </div>
+  <div id="mobile">
+    <a href="#">Cart</a>
+    <i id="bar" class="fas fa-outdent"></i>
+  </div>
+</section>

@@ -1,0 +1,83 @@
+{% extends 'base/main.html' %} {% block title %} Ecommerce Website Home Page 
+{% endblock title %} 
+{% block content %}
+  
+{% if request.user.is_superuser%}
+<section class="section-p1">
+  <h4>Tarde-in-offer</h4>
+  <h2>Super value deals</h2>
+  <h1>On all product</h1>
+  <p>Save more with coupons & up to 70% off</p>
+</section>
+<section id="product1" class="section-p1">
+  <h2>New Feature</h2>
+  <div class="pro-container">
+    {% for product in some_products %}
+    <div class="pro">
+      {% if product.thumbnail %}
+      <img src="{{product.thumbnail.url}}" alt="Product_image" />
+      {% endif %}
+      <div class="des">
+        <span>{{product.category}}</span>
+        <h5>{{product.name}}</h5>
+        <h4>${{product.price}}</h4>
+      </div>
+      {% if product.in_stock == 0 %}
+      <h3>Out of Stock</h3>
+      {% else %}
+        {% if request.user.is_authenticated %}
+            <button data-product="{{product.id}}"data-action="add"class="update-cart addcartBtn">Add to Cart</button>
+        {% else%}
+            <button class="addcartBtn">
+                <a style="text-decoration: none; color: white;" href="{% url 'user:login' %}">Add to Cart</a>
+            </button>
+            <button class="viewcartBtn">
+              <a style="text-decoration: none; color: white;" href="{% url 'base:detail_product_page' product.id %}">View Product</a>
+            </button>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% else %}
+<section id="hero">
+  <h4>Tarde-in-offer</h4>
+  <h2>Super value deals</h2>
+  <h1>On all product</h1>
+  <p>Save more with coupons & up to 70% off</p>
+  <button><a href="{% url 'base:shop_page' %}">Shop Now</a></button>
+</section>
+<section id="product1" class="section-p1">
+  <h2>New Feature</h2>
+  <div class="pro-container">
+    {% for product in some_products %}
+    <div class="pro">
+      {% if product.thumbnail %}
+      <img src="{{product.thumbnail.url}}" alt="Product_image" />
+      {% endif %}
+      <div class="des">
+        <span>{{product.category}}</span>
+        <h5>{{product.name}}</h5>
+        <h4>${{product.price}}</h4>
+      </div>
+      {% if product.in_stock == 0 %}
+      <h3>Out of Stock</h3>
+      {% else %}
+        {% if request.user.is_authenticated %}
+            <button data-product="{{product.id}}"data-action="add"class="update-cart addcartBtn">Add to Cart</button>
+        {% else%}
+            <button class="addcartBtn">
+                <a style="text-decoration: none; color: white;" href="{% url 'user:login' %}">Add to Cart</a>
+            </button>
+            <button class="viewcartBtn">
+              <a style="text-decoration: none; color: white;" href="{% url 'base:detail_product_page' product.id %}">View Product</a>
+            </button>
+        {% endif %}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}  
+{% endblock content %}

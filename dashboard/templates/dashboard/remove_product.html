@@ -1,0 +1,19 @@
+{% extends 'base/main.html' %}
+{% block title %} Admin Dashboard {% endblock title%}
+{% block content %}
+    <section id="product1" class="section-p1">
+        <div class="layout__body">
+            <form  action="" method="POST">
+                {% csrf_token %}
+              <div class="form__group">
+                <p>Confirm to remove "{{obj}} from database"?</p>
+              </div>
+    
+              <div class="for__group">
+                <input class="btn btn--main" type="submit" value="Confirm" />
+              </div>
+            </form>
+          </div>
+        
+    </section>
+{% endblock content %}
